@@ -60,6 +60,11 @@ public class EntityUser implements User {
     private String firstName;
     private String lastName;
     private String displayName;
+    /*unisa-change SY - 28 Nov 2018 */
+    private String gender;
+    private String location;
+    private String age;
+    /* end of unisa-change */   
     private String type;
     private String owner;
     private long lastModified;
@@ -81,6 +86,11 @@ public class EntityUser implements User {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.displayName = user.getDisplayName();
+        /*unisa-change SY - 28 Nov 2018 */
+        this.age = user.getAge();
+        this.location = user.getLocation();
+        this.gender = user.getGender();
+        /*end of unisa-change*/
         this.owner = user.getCreatedBy() == null ? null : "/user/" + user.getCreatedBy().getId();
         this.lastModified = user.getModifiedTime() == null ? System.currentTimeMillis() : user.getModifiedTime().getTime();
         this.type = user.getType();
@@ -91,6 +101,23 @@ public class EntityUser implements User {
             this.setProperty(name, value);
         }
     }
+
+    /*unisa-change SY - 28 Nov 2018 */
+    public EntityUser(String eid, String email, String firstName, String lastName, String gender,
+    	     String location, String age,
+    	            String displayName, String password, String type) {
+    	        this.eid = eid;
+    	        this.password = password;
+    	        this.email = email;
+    	        this.firstName = firstName;
+    	        this.lastName = lastName;
+    	        this.age = age;
+    	        this.location = location;
+    	        this.gender = gender;
+    	        this.displayName = displayName;
+    	        this.type = type;
+    }
+    /* end of unisa-change */
 
     public EntityUser(String eid, String email, String firstName, String lastName,
             String displayName, String password, String type) {
@@ -167,6 +194,34 @@ public class EntityUser implements User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+/* unisa-change SY 28-Nov 2017*/
+    
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.lastName = gender;
+    }
+    
+    /* end of unisa-change */
+
 
     @EntityTitle
     public String getDisplayName() {
