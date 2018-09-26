@@ -1480,6 +1480,13 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		edit.setEmail(email);
 		edit.setPassword(pw);
 		edit.setType(type);
+		
+		/* unisa-change */
+		edit.setAge(age);
+        edit.setLocation(location);
+        edit.setGender(gender);
+        /* end of unisa-change */
+
 
 		ResourcePropertiesEdit props = edit.getPropertiesEdit();
 		if (properties != null)
@@ -2029,6 +2036,17 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 		/** The user last name. */
 		protected String m_lastName = null;
+		
+		/* unisa-change */        
+        /** The user age. */
+        protected String m_age = null;
+        
+        /** The user location. */
+        protected String m_location = null;
+        
+        /** The user gender. */
+        protected String m_gender = null;
+        /* end of unisa-change */
 
 		/** The user email address. */
 		protected String m_email = null;
@@ -2060,6 +2078,10 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		/** If editing the last name is restricted **/
 		protected boolean m_restrictedLastName = false;
 
+		/* unisa-change */
+        /** If editing the age is restricted **/
+        protected boolean m_restrictedAge = false;
+        /* end of unisa-change */
 
 		/** If editing the email is restricted **/
 		protected boolean m_restrictedEmail = false;
@@ -2136,6 +2158,11 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			m_eid = cleanEid(el.getAttribute("eid"));
 			m_firstName = StringUtils.trimToNull(el.getAttribute("first-name"));
 			m_lastName = StringUtils.trimToNull(el.getAttribute("last-name"));
+			/* unisa-change */
+			m_age = StringUtils.trimToNull(el.getAttribute("age"));
+            m_location = StringUtils.trimToNull(el.getAttribute("location"));
+            m_gender = StringUtils.trimToNull(el.getAttribute("gender"));
+            /* end of unisa-change */
 			setEmail(StringUtils.trimToNull(el.getAttribute("email")));
 			m_pw = el.getAttribute("pw");
 			m_type = StringUtils.trimToNull(el.getAttribute("type"));
@@ -2219,6 +2246,12 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		 *        The first name.
 		 * @param lastName
 		 *        The last name.
+         *@param age
+         *        The age.
+         * @param location
+         *        The location.
+         * @param gender
+         *        The gender.
 		 * @param type
 		 *        The type.
 		 * @param pw
@@ -2232,7 +2265,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		 * @param modifiedOn
 		 *        The modified on property.
 		 */
-		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String type, String pw,
+		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String age, String location, String gender, String type, String pw,
 				String createdBy, Time createdOn, String modifiedBy, Time modifiedOn)
 		{
 			m_id = id;
@@ -2240,6 +2273,12 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			m_firstName = firstName;
 			m_lastName = lastName;
 			m_type = type;
+			/* unisa-change */
+			m_age = StringUtils.trimToNull(el.getAttribute("age"));
+            m_location = StringUtils.trimToNull(el.getAttribute("location"));
+            m_gender = StringUtils.trimToNull(el.getAttribute("gender"));
+            /* end of unisa-change */
+            
 			setEmail(email);
 			m_pw = pw;
 			m_createdUserId = createdBy;
@@ -2265,6 +2304,11 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			m_eid = user.getEid();
 			m_firstName = user.getFirstName();
 			m_lastName = user.getLastName();
+			/* unisa-change*/
+            m_age = user.getAge();
+            m_location = user.getLocation();
+            m_gender = user.getGender();
+            /* end of unisa-change */
 			m_type = user.getType();
 			setEmail(user.getEmail());
 			m_pw = ((BaseUserEdit) user).m_pw;
@@ -2301,6 +2345,11 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			user.setAttribute("eid", getEid());
 			if (m_firstName != null) user.setAttribute("first-name", m_firstName);
 			if (m_lastName != null) user.setAttribute("last-name", m_lastName);
+			/* unisa-change */
+            if (m_age != null) user.setAttribute("age", m_age);
+            if (m_location != null) user.setAttribute("location", m_location);
+            if (m_gender != null) user.setAttribute("gender", m_gender);
+            /* end of unisa-change */
 			if (m_type != null) user.setAttribute("type", m_type);
 			user.setAttribute("email", getEmail());
 			user.setAttribute("created-id", m_createdUserId);
@@ -2542,6 +2591,36 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			return m_lastName;
 		}
 
+		/* unisa-change */
+        /**
+         * @inheritDoc
+         */
+        public String getAge()
+        {
+                if (m_age == null) return "";
+                return m_age;
+        }
+        
+        /**
+         * @inheritDoc
+         */
+        public String getLocation()
+        {
+                if (m_location == null) return "";
+                return m_location;
+        }
+        
+        /**
+         * @inheritDoc
+         */
+        
+        public String getGender()
+        {
+                if (m_gender == null) return "";
+                return m_gender;
+        }
+		/* end of unisa-change */
+		
 		/**
 		 * @inheritDoc
 		 */
@@ -2719,6 +2798,42 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		    }
 		}
 
+		/* unisa-change */
+        /**
+         * @inheritDoc
+         */
+        public void setAge(String age)
+        {
+                if(!m_restrictedAge) {
+        // https://jira.sakaiproject.org/browse/SAK-20226 - removed html from name
+                m_age = formattedText().convertFormattedTextToPlaintext(age);
+                
+            }
+        }
+        
+        /**
+         * @inheritDoc
+         */
+        public void setLocation(String location)
+        {
+                if(!m_restrictedLocation) {
+        // https://jira.sakaiproject.org/browse/SAK-20226 - removed html from name
+                m_location = formattedText().convertFormattedTextToPlaintext(location);
+            }
+        }
+        
+        /**
+         * @inheritDoc
+         */
+        public void setGender(String gender)
+        {
+                if(!m_restrictedGender) {
+        // https://jira.sakaiproject.org/browse/SAK-20226 - removed html from name
+                m_gender = formattedText().convertFormattedTextToPlaintext(gender);
+            }
+        }
+		/* end of unisa-change */
+		
 		/**
 		 * @inheritDoc
 		 */
@@ -2777,6 +2892,13 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 		}
 
+		/* unisa-change */
+        public void restrictEditAge() {
+
+            m_restrictedAge = true;
+
+        }
+        /* end of unisa-change */
 
 
 		public void restrictEditEmail() {
