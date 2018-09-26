@@ -1468,7 +1468,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 	/**
 	 * @inheritDoc
 	 */
-	public User addUser(String id, String eid, String firstName, String lastName, String email, String pw, String type,
+	public User addUser(String id, String eid, String firstName, String lastName, String age, String location, String gender,String email, String pw, String type,
 			ResourceProperties properties) throws UserIdInvalidException, UserAlreadyDefinedException, UserPermissionException
 	{
 		// get it added
