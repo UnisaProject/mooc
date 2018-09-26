@@ -469,6 +469,21 @@ public class UsersAction extends PagedResourceActionII
 		value = (String) state.getAttribute("valueType");
 		if (value != null) context.put("valueType", value);
 		
+        /* unisa-change */
+        // New attributes
+        value = (String) state.getAttribute("valueAge");
+        if (value != null)
+                context.put("valueAge", value);
+        value = (String) state.getAttribute("valueLocation");
+        if (value != null)
+                context.put("valueLocation", value);
+
+        value = (String) state.getAttribute("valueGender");
+        if (value != null)
+                context.put("valueGender", value);
+        /* end of unisa-change */
+
+		
 		//optional attributes list
 		context.put("optionalAttributes", getOptionalAttributes());
 		
@@ -587,6 +602,22 @@ public class UsersAction extends PagedResourceActionII
 
 		value = (String) state.getAttribute("valueType");
 		if (value != null) context.put("valueType", value);
+		
+        /* unisa-changes */
+        // New attributes
+        value = (String) state.getAttribute("valueAge");
+        if (value != null)
+                context.put("valueAge", value);
+
+        value = (String) state.getAttribute("valueLocation");
+        if (value != null)
+                context.put("valueLocation", value);
+
+        value = (String) state.getAttribute("valueGender");
+        if (value != null)
+                context.put("valueGender", value);
+        /* end of unisa-change */
+
 		
 		//optional attributes lists
 		context.put("optionalAttributes", getOptionalAttributes());
@@ -773,7 +804,13 @@ public class UsersAction extends PagedResourceActionII
 			for(ImportedUser user: users) {
 				try {
 					
-					TempUser tempUser = new TempUser(user.getEid(), user.getEmail(), null, null, user.getEid(), user.getPassword(), null);
+                    
+                    /* unisa-change add extra attributes */
+                    TempUser tempUser = new TempUser(user.getEid(),
+                                    user.getEmail(), null, null, user.getEid(),
+                                    user.getPassword(), user.getAge(),
+                                    user.getLocation(), user.getGender(), null);
+                    /* end of unisa-change */
 					
 					if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(tempUser)){
 						addAlert(state, rb.getString("useact.theuseemail1") + ":" + tempUser.getEmail());
@@ -782,7 +819,14 @@ public class UsersAction extends PagedResourceActionII
 						continue;
 					}
 					
-					User newUser = UserDirectoryService.addUser(null, user.getEid(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getType(), user.getProperties());
+                    /* unisa-changes add extra variables */
+                    User newUser = UserDirectoryService.addUser(null,
+                                    user.getEid(), user.getFirstName(),
+                                    user.getLastName(), user.getEmail(),
+                                    user.getPassword(), user.getType(), user.getAge(),
+                                    user.getGender(), user.getLocation(),
+                                    user.getProperties());
+                    /* end of unisa-changes */
 			
 					
 				}
@@ -986,6 +1030,13 @@ public class UsersAction extends PagedResourceActionII
 		state.removeAttribute("valueLastName");
 		state.removeAttribute("valueEmail");
 		state.removeAttribute("valueType");
+        /* unisa-change */
+        // New attributes
+        state.removeAttribute("valueAge");
+        state.removeAttribute("valueLocation");
+        state.removeAttribute("valueGender");
+        /* end of unisa-change */
+
 
 		// return to main mode
 		state.removeAttribute("mode");
@@ -1068,6 +1119,12 @@ public class UsersAction extends PagedResourceActionII
 		state.removeAttribute("valueLastName");
 		state.removeAttribute("valueEmail");
 		state.removeAttribute("valueType");
+        /* unisa-change */
+        // New attributes
+        state.removeAttribute("valueAge");
+        state.removeAttribute("valueLocation");
+        state.removeAttribute("valueGender");
+        /* end of unisa-change */
 
 		// return to main mode
 		state.removeAttribute("mode");
@@ -1181,7 +1238,14 @@ public class UsersAction extends PagedResourceActionII
                 state.removeAttribute("valueLastName");
                 state.removeAttribute("valueEmail");
                 state.removeAttribute("valueType");
+                /* unisa-change */
+                // New attributes
+                state.removeAttribute("valueAge");
+                state.removeAttribute("valueLocation");
+                state.removeAttribute("valueGender");
+                /* end of unisa-change */
 
+                
 		// go to main mode
 		state.removeAttribute("mode");
 
@@ -1250,6 +1314,18 @@ public class UsersAction extends PagedResourceActionII
 		state.setAttribute("valueLastName", lastName);
 		String email = StringUtils.trimToNull(data.getParameters().getString("email"));
 		state.setAttribute("valueEmail", email);
+		
+        /* unisa-change */
+        // new attributes
+        String age = StringUtils.trimToNull(data.getParameters().getString("age"));
+        state.setAttribute("valueAge", age);
+        String location = StringUtils.trimToNull(data.getParameters().getString("location"));
+        state.setAttribute("valueLocation", location);
+        String gender = StringUtils.trimToNull(data.getParameters().getString("gender"));
+        state.setAttribute("valueGender", gender);
+        /* end of unisa-change */
+
+		
 		String pw = StringUtils.trimToNull(data.getParameters().getString("pw"));
         String pwConfirm = StringUtils.trimToNull(data.getParameters().getString("pw0"));
 
@@ -1482,8 +1558,10 @@ public class UsersAction extends PagedResourceActionII
 				}
 				else
 				{
-					newUser = UserDirectoryService.addUser(id, eid, firstName, lastName, email, pw, type, properties);
-
+                    // unisa-change  add params 
+                    newUser = UserDirectoryService.addUser(id, eid, firstName, lastName, age, location, gender,  email, pw, type, properties);
+                    // end of unisa-change 
+                    
 					if (SecurityService.isSuperUser()) {
 						if(disabled == 1){
 							try {
@@ -1566,6 +1644,13 @@ public class UsersAction extends PagedResourceActionII
 			if (eid != null) user.setEid(eid);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
+			
+            // unisa-change 
+            user.setAge(age);
+            user.setLocation(location);
+            user.setGender(gender);
+            // end of unisa-change 
+
 			user.setEmail(email);
 			if (type != null) user.setType(type);
 			
