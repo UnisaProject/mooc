@@ -70,6 +70,34 @@ public interface UserEdit extends User, Edit
 	 */
 	void setLastName(String name);
 
+	// unisa-change
+    /**
+     * Set the user's age.
+     * 
+     * @param name
+     *        The user's agee.
+     */
+    void setAge(String age);
+
+    
+    /**
+     * Set the user's location.
+     * 
+     * @param name
+     *        The user's location.
+     */
+    void setLocation(String location);
+
+    
+    /**
+     * Set the user's gender.
+     * 
+     * @param name
+     *        The user's gender.
+     */
+    void setGender(String gender);
+    // end unisa-change
+	
 	/**
 	 * Set the user's password
 	 * 
