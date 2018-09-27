@@ -2081,6 +2081,13 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		/* unisa-change */
         /** If editing the age is restricted **/
         protected boolean m_restrictedAge = false;
+        
+		/** If editing the location is restricted **/
+		protected boolean m_restrictedLocation = false;
+
+		/** If editing the gender is restricted **/
+		protected boolean m_restrictedGender = false;        
+        
         /* end of unisa-change */
 
 		/** If editing the email is restricted **/
@@ -2265,20 +2272,14 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		 * @param modifiedOn
 		 *        The modified on property.
 		 */
-		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String age, String location, String gender, String type, String pw,
+		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String type, String pw,
 				String createdBy, Time createdOn, String modifiedBy, Time modifiedOn)
 		{
 			m_id = id;
 			m_eid = eid;
 			m_firstName = firstName;
 			m_lastName = lastName;
-			m_type = type;
-			/* unisa-change */
-			m_age = StringUtils.trimToNull(el.getAttribute("age"));
-            m_location = StringUtils.trimToNull(el.getAttribute("location"));
-            m_gender = StringUtils.trimToNull(el.getAttribute("gender"));
-            /* end of unisa-change */
-            
+			m_type = type;          
 			setEmail(email);
 			m_pw = pw;
 			m_createdUserId = createdBy;
@@ -2291,6 +2292,64 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			props.setLazy(true);
 			m_properties = props;
 		}
+		
+		/* unisa-change */
+		/**
+		 * ReConstruct.
+		 *
+		 * @param id
+		 *        The id.
+		 * @param eid
+		 *        The eid.
+		 * @param email
+		 *        The email.
+		 * @param firstName
+		 *        The first name.
+		 * @param lastName
+		 *        The last name.
+		 *@param age
+		 *        The age.
+		 * @param location
+		 *        The location.
+		 * @param gender
+		 *        The gender.
+		 * @param type
+		 *        The type.
+		 * @param pw
+		 *        The password.
+		 * @param createdBy
+		 *        The createdBy property.
+		 * @param createdOn
+		 *        The createdOn property.
+		 * @param modifiedBy
+		 *        The modified by property.
+		 * @param modifiedOn
+		 *        The modified on property.
+		 */
+		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String age, String location, String gender, String type, String pw,
+				String createdBy, Time createdOn, String modifiedBy, Time modifiedOn)
+		{
+			m_id = id;
+			m_eid = eid;
+			m_firstName = firstName;
+			m_lastName = lastName;
+			m_age = age;
+			m_location = location;
+			m_gender = gender;
+			m_type = type;
+			setEmail(email);
+			m_pw = pw;
+			m_createdUserId = createdBy;
+			m_lastModifiedUserId = modifiedBy;
+			m_createdTime = createdOn;
+			m_lastModifiedTime = modifiedOn;
+
+			// setup for properties, but mark them lazy since we have not yet established them from data
+			BaseResourcePropertiesEdit props = new BaseResourcePropertiesEdit();
+			props.setLazy(true);
+			m_properties = props;
+		}
+		/* end of unisa-change */
 
 		/**
 		 * Take all values from this object.
@@ -2898,6 +2957,18 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
             m_restrictedAge = true;
 
         }
+        
+		public void restrictEditLocation() {
+
+			m_restrictedLocation = true;
+
+		}
+
+		public void restrictEditGender() {
+
+			m_restrictedGender = true;
+
+		}        
         /* end of unisa-change */
 
 
