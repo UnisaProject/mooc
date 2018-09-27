@@ -93,6 +93,12 @@ public class PasswordPolicyHelper {
         @Getter @Setter private String password;
         @Getter @Setter private String type;
 
+        /* unisa-change */
+        // new attributes
+        @Getter @Setter private String age;
+        @Getter @Setter private String location;
+        @Getter @Setter private String gender;
+        /* end of unisa-change */
         /**
          * Default zero-arg constructor.
          * DO NOT USE!
@@ -126,6 +132,45 @@ public class PasswordPolicyHelper {
             this.displayName 	= displayName;
             this.type 			= type;
         }
+        
+        /* unisa-change */
+        /**
+         * Constructor
+         *
+         * @param eid
+         * 				the user's external ID
+         * @param email
+         * 				the user's email address
+         * @param firstName
+         * 				the user's first name
+         * @param lastName
+         * 				the user's last name
+         * @param displayName
+         *				the user's display name
+         * @param password
+         * 				the user's password
+         * @param type
+         * 				the user's type
+         * @param age
+         * 				the user's age
+         *  @param location
+         * 				the user's location
+         *  @param gender
+         * 				the user's gender
+         */
+        public TempUser(String eid, String email, String firstName, String lastName, String displayName, String password, String type, String age, String location, String gender) {
+            this.eid 			= eid;
+            this.password 		= password;
+            this.email 			= email;
+            this.firstName 		= firstName;
+            this.lastName 		= lastName;
+            this.displayName 	= displayName;
+            this.type 			= type;
+            this.age			= age;
+            this.location		= location;
+            this.gender			= gender;
+        }
+        /* end of unisa-change */
 
         /***********************************************************************************************
          ********************************* UNIMPLEMENTED METHODS ***************************************
@@ -145,6 +190,11 @@ public class PasswordPolicyHelper {
         @Override public String 			getUrl(String arg0) 						{ return null; }
         @Override public String 			getSortName() 								{ return null; }
         @Override public String 			getType() 									{ return null; }
+        /*unisa change */
+        @Override public String 			getAge() 									{ return null; }
+        @Override public String 			getLocation() 								{ return null; }
+        @Override public String 			getGender() 								{ return null; }
+        /* end of unisa-change */
         @Override public User 				getModifiedBy() 							{ return null; }
         @Override public User 				getCreatedBy() 								{ return null; }
         @Override public Date 				getCreatedDate() 							{ return null; }
