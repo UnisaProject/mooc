@@ -91,6 +91,29 @@ public interface User extends Entity, Comparable
 	 * @return The user's last name.
 	 */
 	String getLastName();
+	
+	// unisa-change
+    /**
+     * Access the user's age.
+     * 
+     * @return The user's age.
+     */
+    String getAge();
+
+    /**
+     * Access the user's location.
+     * 
+     * @return The user's location.
+     */
+    String getLocation();
+
+    /**
+     * Access the user's gender.
+     * 
+     * @return The user's gender  .
+     */
+    String getGender();
+    // end of unisa-change
 
 	/**
 	 * Check if this is the user's password.

@@ -34,6 +34,11 @@ public class ImportedUser {
 	private String lastName;
 	private String email;
 	private String password;
+	/* unisa-change */
+	private String age;
+	private String location;
+	private String gender;
+	/* end of unisa-change */
 	private String type;
 	private ResourceProperties properties;
 	

@@ -146,9 +146,47 @@ public interface UserDirectoryService extends EntityProducer
 	 * @exception UserPermissionException
 	 *            if the current user does not have permission to add a user.
 	 */
-	User addUser(String id, String eid, String firstName, String lastName, String email, String pw, String type,
+    User addUser(String id, String eid, String firstName, String lastName, String email, String pw, String type,					
 			ResourceProperties properties) throws UserIdInvalidException, UserAlreadyDefinedException, UserPermissionException;
 
+    /* unisa-change */
+	/**
+	 * Add a new user to the directory, complete in one operation. Id is auto-generated.
+	 *
+	 * @param id
+	 *        The user uuid string. Leave null for auto-assignment.
+	 * @param eid
+	 *        The user eid.
+	 * @param firstName
+	 *        The user first name.
+	 * @param lastName
+	 *        The user last name.
+	 * @param age
+	 * 		  The user age
+	 * @param location
+	 * 		  the user location
+	 * @param gender
+	 * 		  the user gender       
+	 * @param email
+	 *        The user email.
+	 * @param pw
+	 *        The user password.
+	 * @param type
+	 *        The user type.
+	 * @param properties
+	 *        Other user properties.
+	 * @return The User object created.
+	 * @exception UserIdInvalidException
+	 *            if the user eid is invalid.
+	 * @exception UserAlreadyDefinedException
+	 *            if the user eid is already used.
+	 * @exception UserPermissionException
+	 *            if the current user does not have permission to add a user.
+	 */
+	User addUser(String id, String eid, String firstName, String lastName,String age, String location, String gender, String email, String pw, String type, 
+			ResourceProperties properties) throws UserIdInvalidException, UserAlreadyDefinedException, UserPermissionException;
+	/* end of unisa-change */
+    
 	/**
 	 * check permissions for addUser().
 	 *

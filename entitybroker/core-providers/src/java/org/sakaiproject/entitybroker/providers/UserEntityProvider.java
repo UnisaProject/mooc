@@ -161,8 +161,12 @@ public class UserEntityProvider extends AbstractEntityProvider implements CoreEn
 
             // NOTE: must assign empty password if user is created this way.... it sucks -AZ
             try {
+            	/* Unisa-change SY - 28 Nov 2017 */
+                //previous : User newUser = userDirectoryService.addUser(userId, user.getEid(), user.getFirstName(), user.getLastName(), 
+                  //      user.getEmail(), "", user.getType(), user.getProperties());
                 User newUser = userDirectoryService.addUser(userId, user.getEid(), user.getFirstName(), user.getLastName(), 
-                        user.getEmail(), "", user.getType(), user.getProperties());
+                		user.getAge(), user.getLocation(), user.getGender(),  user.getEmail(), "", user.getType(), user.getProperties());            	
+                /* end of unisa-change */
                 userId = newUser.getId();
             } catch (UserIdInvalidException e) {
                 throw new IllegalArgumentException("User ID is invalid, id=" + user.getId() + ", eid="+user.getEid(), e);
@@ -191,6 +195,11 @@ public class UserEntityProvider extends AbstractEntityProvider implements CoreEn
                 edit.setLastName(user.getLastName());
                 edit.setPassword(user.getPassword());
                 edit.setType(user.getType());
+                /* unisa-change - SY - 28 Nov 2017 */
+                edit.setAge(user.getAge());
+                edit.setLocation(user.getLocation());
+                edit.setGender(user.getGender());
+                 /* end of unisa-change */
                 // put in properties
                 ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
                 for (String key : user.getProps().keySet()) {
@@ -240,6 +249,11 @@ public class UserEntityProvider extends AbstractEntityProvider implements CoreEn
             edit.setFirstName(u.getFirstName());
             edit.setLastName(u.getLastName());
             edit.setType(u.getType());
+            /* Unisa-change - SY - 28 Nov 2017 */
+            edit.setAge(u.getAge());
+            edit.setLocation(u.getLocation());
+            edit.setGender(u.getGender());
+            /* end of unisa-change */            
             // put in properties
             ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
             rpe.set(u.getProperties());
@@ -249,6 +263,11 @@ public class UserEntityProvider extends AbstractEntityProvider implements CoreEn
             edit.setEmail(u.getEmail());
             edit.setFirstName(u.getFirstName());
             edit.setLastName(u.getLastName());
+            /* unisa-change - SY - 28 Nov 2017 */
+            edit.setAge(u.getAge());
+            edit.setLocation(u.getLocation());
+            edit.setGender(u.getGender());
+            /* end of unisa-change */
             if (u.getPassword() != null && !"".equals(u.getPassword())) {
                 edit.setPassword(u.getPassword());
             }
