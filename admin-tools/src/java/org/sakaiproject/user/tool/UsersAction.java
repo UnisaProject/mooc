@@ -852,7 +852,7 @@ public class UsersAction extends PagedResourceActionII
 					}
 					
 					/* unisa-changes add extra variables */
-                    User newUser = UserDirectoryService.addUser(null, user.getEid(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getType(), user.getAge(), user.getGender(), user.getLocation(), user.getProperties());
+                    User newUser = userDirectoryService.addUser(null, user.getEid(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getType(), user.getAge(), user.getGender(), user.getLocation(), user.getProperties());
                     /* end of unisa-changes */
 					
 				}
@@ -1581,7 +1581,7 @@ public class UsersAction extends PagedResourceActionII
 				else
 				{
 					// unisa-change  add params 
-                    newUser = UserDirectoryService.addUser(id, eid, firstName, lastName, age, location, gender,  email, pw, type, properties);
+                    newUser = userDirectoryService.addUser(id, eid, firstName, lastName, age, location, gender,  email, pw, type, properties);
                     // end of unisa-change
 
 					if (securityService.isSuperUser()) {
