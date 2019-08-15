@@ -59,7 +59,11 @@ class UserEditStub implements UserEdit {
 	
     // BaseResorcePropertiesEdit does not override toString or equals()
 	private ResourcePropertiesEdit properties = new ResourcePropertiesEditStub();
-
+	
+	private String gender;
+    private String location;
+    private String age;
+    
 	public UserEditStub() {
 	}
 
@@ -292,6 +296,30 @@ class UserEditStub implements UserEdit {
 	public Date getModifiedDate() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 	
 }
