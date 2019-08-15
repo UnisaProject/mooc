@@ -2182,6 +2182,9 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 		// in object cache of the sort name.
 		private transient String m_sortName;
+		
+		protected Instant m_createdTime = null;
+		protected Instant m_lastModifiedTime = null;
 
 		/**
 		 * Construct.
@@ -2351,7 +2354,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		 *        The modified on property.
 		 */
 		public BaseUserEdit(String id, String eid, String email, String firstName, String lastName, String type, String pw,
-				String createdBy, Time createdOn, String modifiedBy, Time modifiedOn)
+				String createdBy, Instant createdOn, String modifiedBy, Instant modifiedOn)
 		{
 			m_id = id;
 			m_eid = eid;
