@@ -24,6 +24,9 @@ CREATE TABLE SAKAI_USER
        EMAIL_LC             VARCHAR2(255) NULL,
        FIRST_NAME           VARCHAR2(255) NULL,
        LAST_NAME            VARCHAR2(255) NULL,
+       AGE           	 	VARCHAR (99) NULL,
+       LOCATION           	VARCHAR (255) NULL,
+       GENDER            	VARCHAR (99) NULL,
        TYPE                 VARCHAR2(255) NULL,
        PW                   VARCHAR2(255) NULL,
        CREATEDBY            VARCHAR2(99) NOT NULL,
@@ -78,8 +81,8 @@ CREATE UNIQUE INDEX AK_SAKAI_USER_ID_MAP_EID ON SAKAI_USER_ID_MAP
 
 -- populate with the admin and postmaster users
 
-INSERT INTO SAKAI_USER VALUES ('admin', '', '', 'Sakai', 'Administrator', '', 'ISMvKXpXpadDiUoOSoAfww==', 'admin', 'admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO SAKAI_USER VALUES ('postmaster', '', '', 'Sakai', 'Postmaster', '', '', 'postmaster', 'postmaster', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO SAKAI_USER VALUES ('admin', '', '', 'Sakai', 'Administrator','', '', '','', 'ISMvKXpXpadDiUoOSoAfww==', 'admin', 'admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO SAKAI_USER VALUES ('postmaster', '', '', 'Sakai', 'Postmaster', '', '', '', '','', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO SAKAI_USER_ID_MAP VALUES ('admin', 'admin');
 INSERT INTO SAKAI_USER_ID_MAP VALUES ('postmaster', 'postmaster');

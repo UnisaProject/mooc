@@ -95,6 +95,36 @@ function removeOptionalAttributeBlock(elem) {
 				#if($user)$validator.escapeHtml($user.LastName)#elseif($valueLastName)$validator.escapeHtml($valueLastName)#end
 			#end
 			</div>
+			<div class="shorttext">			
+				<label for="age">
+					$tlang.getString("usecre.age")
+				</label>
+			#if ($service.allowUpdateUserName($user.Id) || !$user)
+				<input type="text" name="age" id="age" #if($user)value="$validator.escapeHtml($user.Age)"#elseif($valueAge)value="$validator.escapeHtml($valueAge)"#end />
+			#else
+				#if($user)$validator.escapeHtml($user.Age)#elseif($valueAge)$validator.escapeHtml($valueAge)#end
+			#end
+			</div>
+			<div class="shorttext">
+				<label for="gender">
+					$tlang.getString("usecre.gender")
+				</label>
+			#if ($service.allowUpdateUserName($user.Id) || !$user)
+				<input type="text" name="gender" id="gender" #if($user)value="$validator.escapeHtml($user.Gender)"#elseif($valueGender)value="$validator.escapeHtml($valueGender)"#end />
+			#else
+				#if($user)$validator.escapeHtml($user.Gender)#elseif($valueGender)$validator.escapeHtml($valueGender)#end
+			#end
+			</div>
+			<div class="shorttext">
+				<label for="location">
+					$tlang.getString("usecre.location")
+				</label>
+			#if ($service.allowUpdateUserName($user.Id) || !$user)
+				<input type="text" name="location" id="location" #if($user)value="$validator.escapeHtml($user.Location)"#elseif($valueLocation)value="$validator.escapeHtml($valueLocation)"#end />
+			#else
+				#if($user)$validator.escapeHtml($user.Location)#elseif($valueLastName)$validator.escapeHtml($valueLocation)#end
+			#end
+			</div>
 			<div class="shorttext">
 				<label for="email">
 					$tlang.getString("useconrem.ema")

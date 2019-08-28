@@ -64,7 +64,7 @@ public abstract class DbUserService extends BaseUserDirectoryService
 	protected String m_sortField2 = "FIRST_NAME";
 
 	/** All fields. */
-	protected String[] m_fieldNames = {"USER_ID", "EMAIL", "EMAIL_LC", "FIRST_NAME", "LAST_NAME", "TYPE", "PW", "CREATEDBY", "MODIFIEDBY",
+	protected String[] m_fieldNames = {"USER_ID", "EMAIL", "EMAIL_LC", "FIRST_NAME", "LAST_NAME", "AGE","LOCATION","GENDER", "TYPE", "PW", "CREATEDBY", "MODIFIEDBY",
 			"CREATEDON", "MODIFIEDON"};
 
 	/*************************************************************************************************************************************************
@@ -369,11 +369,11 @@ public abstract class DbUserService extends BaseUserDirectoryService
 		 */
 		protected Object[] fields(String id, UserEdit edit, boolean idAgain)
 		{
-			Object[] rv = new Object[idAgain ? 12 : 11];
+			Object[] rv = new Object[idAgain ? 15 : 14];
 			rv[0] = caseId(id);
 			if (idAgain)
 			{
-				rv[11] = rv[0];
+				rv[14] = rv[0];
 			}
 
 			if (edit == null)
@@ -390,10 +390,13 @@ public abstract class DbUserService extends BaseUserDirectoryService
 				rv[4] = "";
 				rv[5] = "";
 				rv[6] = "";
-				rv[7] = attribUser;
-				rv[8] = attribUser;
-				rv[9] = now;
-				rv[10] = now;
+ 				rv[7] = "";
+				rv[8] = "";
+				rv[9] = "";
+				rv[10] = attribUser;
+				rv[11] = attribUser;
+				rv[12] = now;
+				rv[13] = now;
 			}
 
 			else
@@ -402,23 +405,26 @@ public abstract class DbUserService extends BaseUserDirectoryService
 				rv[2] = StringUtils.trimToEmpty(edit.getEmail().toLowerCase());
 				rv[3] = StringUtils.trimToEmpty(edit.getFirstName());
 				rv[4] = StringUtils.trimToEmpty(edit.getLastName());
-				rv[5] = StringUtils.trimToEmpty(edit.getType());
-				rv[6] = StringUtils.trimToEmpty(((BaseUserEdit) edit).m_pw);
+				rv[5] = StringUtils.trimToEmpty(edit.getAge());
+				rv[6] = StringUtils.trimToEmpty(edit.getLocation());
+				rv[7] = StringUtils.trimToEmpty(edit.getGender());
+				rv[8] = StringUtils.trimToEmpty(edit.getType());
+				rv[9] = StringUtils.trimToEmpty(((BaseUserEdit) edit).m_pw);
 
 				// for creator and modified by, if null, make it the id
-				rv[7] = StringUtils.trimToNull(((BaseUserEdit) edit).m_createdUserId);
-				if (rv[7] == null)
+				rv[10] = StringUtils.trimToNull(((BaseUserEdit) edit).m_createdUserId);
+				if (rv[10] == null)
 				{
-					rv[7] = rv[0];
+					rv[10] = rv[0];
 				}
-				rv[8] = StringUtils.trimToNull(((BaseUserEdit) edit).m_lastModifiedUserId);
-				if (rv[8] == null)
+				rv[11] = StringUtils.trimToNull(((BaseUserEdit) edit).m_lastModifiedUserId);
+				if (rv[11] == null)
 				{
-					rv[8] = rv[0];
+					rv[11] = rv[0];
 				}
 
-				rv[9] = edit.getCreatedDate();
-				rv[10] = edit.getModifiedDate();
+				rv[12] = edit.getCreatedDate();
+				rv[13] = edit.getModifiedDate();
 			}
 
 			return rv;
@@ -440,12 +446,15 @@ public abstract class DbUserService extends BaseUserDirectoryService
 				String email_lc = result.getString(3);
 				String firstName = result.getString(4);
 				String lastName = result.getString(5);
-				String type = result.getString(6);
-				String pw = result.getString(7);
-				String createdBy = result.getString(8);
-				String modifiedBy = result.getString(9);
-				Instant createdOn = Instant.ofEpochMilli(result.getTimestamp(10, sqlService().getCal()).getTime());
-				Instant modifiedOn = Instant.ofEpochMilli(result.getTimestamp(11, sqlService().getCal()).getTime());
+				String age = result.getString(6);
+				String location = result.getString(7);
+				String gender = result.getString(8);
+				String type = result.getString(9);
+				String pw = result.getString(10);
+				String createdBy = result.getString(11);
+				String modifiedBy = result.getString(12);
+				Instant createdOn = Instant.ofEpochMilli(result.getTimestamp(13, sqlService().getCal()).getTime());
+				Instant modifiedOn = Instant.ofEpochMilli(result.getTimestamp(14, sqlService().getCal()).getTime());
 
 				// find the eid from the mapping
 				String eid = checkMapForEid(id);
@@ -455,7 +464,7 @@ public abstract class DbUserService extends BaseUserDirectoryService
 				}
 
 				// create the Resource from these fields
-				return new BaseUserEdit(id, eid, email, firstName, lastName, type, pw, createdBy, createdOn, modifiedBy, modifiedOn);
+				return new BaseUserEdit(id, eid, email, firstName, lastName, age, location, gender, type, pw, createdBy, createdOn, modifiedBy, modifiedOn);
 			}
 			catch (SQLException e)
 			{
@@ -843,6 +852,9 @@ public abstract class DbUserService extends BaseUserDirectoryService
 					String email = result.getString(4);
 					String firstName = result.getString(5);
 					String lastName = result.getString(6);
+					String age = result.getString(13);
+					String location = result.getString(14);
+					String gender = result.getString(15);
 					String type = result.getString(7);
 					String pw = result.getString(8);
 					String createdBy = result.getString(9);
@@ -851,7 +863,7 @@ public abstract class DbUserService extends BaseUserDirectoryService
 					Instant modifiedOn = (result.getObject(12) != null) ? Instant.ofEpochMilli(result.getTimestamp(12, sqlService().getCal()).getTime()) : null;
 
 					// create the Resource from these fields
-					userEdit = new BaseUserEdit(idFromMap, eidFromMap, email, firstName, lastName, type, pw, createdBy, createdOn, modifiedBy, modifiedOn);
+					userEdit = new BaseUserEdit(idFromMap, eidFromMap, email, firstName, lastName, age, location, gender, type, pw, createdBy, createdOn, modifiedBy, modifiedOn);
 
 					if (idFromSakaiUser != null)
 					{

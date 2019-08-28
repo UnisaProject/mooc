@@ -61,6 +61,26 @@ ${includeLatestJQuery}
 				<input type="text" name="email" id="email" oninput="USER.validateEmail();" onkeyup="USER.validateEmail();" autocomplete="off"#if($user)value="$validator.escapeHtml($user.Email)"#elseif($valueEmail)value="$validator.escapeHtml($valueEmail)"#end #if ($emailRequired) required='required' #end/>
 				<div id="emailWarningMsg" style="display:none">$tlang.getString("useact.invemail")</div>
 			</div>
+			<div class="shorttext">
+				<label for="age">
+					$tlang.getString("usecre.age")
+				</label>
+				<input type="text" name="age" id="age" #if($user)value="$validator.escapeHtml($user.Age)"#elseif($valueAge)value="$validator.escapeHtml($valueAge)"#end/>
+			</div>
+			
+			<div class="shorttext">
+				<label for="gender">
+					$tlang.getString("usecre.gender")
+				</label>
+				<input type="text" name="gender" id="gender" #if($user)value="$validator.escapeHtml($user.Gender)"#elseif($valueGender)value="$validator.escapeHtml($valueGender)"#end/>
+			</div>
+			
+			<div class="shorttext">
+				<label for="location">
+					$tlang.getString("usecre.location")
+				</label>
+				<input type="text" name="location" id="location" #if($user)value="$validator.escapeHtml($user.Location)"#elseif($valueLocation)value="$validator.escapeHtml($valueLocation)"#end/>
+			</div>
 			#if (!$isValidatedWithAccountValidator)
 				<div class="shorttext required">
 					<label for="user_pw">

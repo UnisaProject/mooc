@@ -14388,6 +14388,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	private static final String MACRO_USER_EID            = "${USER_EID}";
 	private static final String MACRO_USER_FIRST_NAME     = "${USER_FIRST_NAME}";
 	private static final String MACRO_USER_LAST_NAME      = "${USER_LAST_NAME}";
+	private static final String MACRO_USER_AGE      	  = "${USER_AGE}";
+	private static final String MACRO_USER_LOCATION       = "${USER_LOCATION}";
+	private static final String MACRO_USER_GENDER      	  = "${USER_GENDER}";
 
 	private static final String MACRO_DEFAULT_ALLOWED = "${USER_ID},${USER_EID},${USER_FIRST_NAME},${USER_LAST_NAME}";
 
@@ -14450,6 +14453,15 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			}
 			if (macroName.equals(MACRO_USER_LAST_NAME)) {
 				return userDirectoryService.getCurrentUser().getLastName();
+			}
+			if (macroName.equals(MACRO_USER_AGE)) {
+				return userDirectoryService.getCurrentUser().getAge();
+			}
+			if (macroName.equals(MACRO_USER_LOCATION)) {
+				return userDirectoryService.getCurrentUser().getLocation();
+			}
+			if (macroName.equals(MACRO_USER_GENDER)) {
+				return userDirectoryService.getCurrentUser().getGender();
 			}
 		}
 		catch (Exception e) {

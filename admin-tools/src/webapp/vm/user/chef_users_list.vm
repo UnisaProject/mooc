@@ -80,6 +80,9 @@
 				<tr>
 					<th id="Eid">$tlang.getString("useconrem.useid")</th>
 					<th id="Name">$tlang.getString("useconrem.nam")</th>
+					<th id="Location">$tlang.getString("usecre.location")</th>
+					<th id="Age">$tlang.getString("usecre.age")</th>
+					<th id="Gender">$tlang.getString("usecre.gender")</th>
 					<th id="Email">$tlang.getString("useconrem.ema")</th>
 					<th id="Type" class="hidden-xs">$tlang.getString("usecre.typ")</th>
 					<th id="Status" class="hidden-xs">$tlang.getString("usecre.status")</th>
@@ -97,6 +100,9 @@
 		#end
 					</td>
 					<td headers="Name">$validator.escapeHtml($user.SortName)</td>
+					<td headers="Location">$validator.escapeHtml($user.Location)</td>
+					<td headers="Age">$validator.escapeHtml($user.Age)</td>
+					<td headers="Gender">$validator.escapeHtml($user.Gender)</td>
 					<td headers="Email">$validator.escapeHtml($user.Email)</td>
 					<td headers="Type" class="hidden-xs">$validator.escapeHtml($user.Type)</td>
 					<td headers="Status" class="hidden-xs">#if($!user.Properties.getProperty("disabled")) $tlang.getString("disabled") #else $tlang.getString("enabled") #end</td>

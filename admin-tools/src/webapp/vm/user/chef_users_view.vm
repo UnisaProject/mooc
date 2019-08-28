@@ -34,6 +34,18 @@
                     $validator.escapeHtml($user.LastName)
                 </div>
                 <div class="shorttext">
+                    <label>$tlang.getString("usecre.age")</label>
+                    $validator.escapeHtml($user.Age)
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usecre.gender")</label>
+                    $validator.escapeHtml($user.Gender)
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usecre.location")</label>
+                    $validator.escapeHtml($user.Location)
+                </div>
+                <div class="shorttext">
                     <label>$tlang.getString("usevie.ema")</label>
                     $validator.escapeHtml($user.Email)
                 </div>
