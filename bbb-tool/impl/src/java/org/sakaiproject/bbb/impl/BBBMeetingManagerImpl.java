@@ -44,7 +44,6 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.PropertyFactoryRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
-import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
@@ -1195,6 +1194,10 @@ public class BBBMeetingManagerImpl implements BBBMeetingManager {
         }
     }
 
+    private String getMeetingDescription(BBBMeeting meeting) {
+        return meeting.getProps().getWelcomeMessage().replaceAll("\\<.*?>","");
+    }
+
     @SuppressWarnings("deprecation")
     private boolean addEditCalendarEvent(BBBMeeting meeting) {
         logger.debug("addEditCalendarEvent");
@@ -1563,9 +1566,10 @@ public class BBBMeetingManagerImpl implements BBBMeetingManager {
         }
 
         // add description & url
+        String meetingDescription = getMeetingDescription(meeting);
         String meetingUrl = getDirectToolJoinUrl(meeting);
         try {
-            vEvent.getProperties().add(new Description(meeting.getProps().getWelcomeMessage()));
+            vEvent.getProperties().add(new Description(meetingDescription));
         } catch (Exception e1) {
             // ignore - no harm
         }
