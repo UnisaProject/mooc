@@ -29,8 +29,10 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
@@ -213,20 +215,21 @@ public class BaseBBBAPI implements BBBAPI {
 
             SecurityAdvisor sa = editResourceSecurityAdvisor();
             // Preupload presentation.
-            String xml_presentation = "";
+            String presentationXML = "";
             String presentation = "";
-            if (preuploadpresentation && meeting.getPresentation() != "" && meeting.getPresentation() != null) {
-                presentation = URLDecoder.decode(meeting.getPresentation().substring(meeting.getPresentation().indexOf("/attachment")), "UTF-8");
+            String presentationName = meeting.getPresentation();
+            if (preuploadpresentation && presentationName != null && !presentationName.isEmpty()) {
+                presentation = URLDecoder.decode(presentationName.substring(presentationName.indexOf("/attachment")), "UTF-8");
                 m_securityService.pushAdvisor(sa);
                 // Open access to resource used as preuploaded presentation.
                 m_contentHostingService.setPubView(presentation, true);
                 // Set XML body.
                 StringBuilder presentationUrl = new StringBuilder(config.getServerUrl());
-                presentationUrl.append(meeting.getPresentation());
-                xml_presentation = "<?xml version='1.0' encoding='UTF-8'?><modules><module name=\"presentation\"><document url=\"" + presentationUrl + "\" /></module></modules>";
+                presentationUrl.append(presentationName);
+                presentationXML = "<?xml version='1.0' encoding='UTF-8'?><modules><module name=\"presentation\"><document url=\"" + presentationUrl + "\" /></module></modules>";
             }
             // Do API call.
-            Map<String, Object> response = doAPICall(APICALL_CREATE, query.toString(), xml_presentation);
+            Map<String, Object> response = doAPICall(APICALL_CREATE, query.toString(), presentationXML);
             // Close access to resource used as preuploaded presentation.
             if (presentation != "") {
                 m_contentHostingService.setPubView(presentation, false);
@@ -312,30 +315,59 @@ public class BaseBBBAPI implements BBBAPI {
     /** Get recordings from BBB server */
     public Map<String, Object> getRecordings(String meetingID)
             throws BBBException {
-    	  try {
-            StringBuilder query = new StringBuilder();
-            query.append("meetingID=");
-            query.append(meetingID);
-            query.append(getCheckSumParameterForQuery(APICALL_GETRECORDINGS, query.toString()));
-
-            Map<String, Object> response = null;
-
-            response = doAPICall(APICALL_GETRECORDINGS, query.toString());
-
-            //It makes sure that the date retrived is a unix timestamp
-            if( response.get("returncode").equals("SUCCESS") && response.get("messageKey") == null  ){
-            	for (Object recordingEntry : (List<Object>)response.get("recordings")) {
-            		Map<String,String> items = (Map<String,String>)recordingEntry;
-            		items.put("startTime", getDateAsStringTimestamp(items.get("startTime")) );
-            		items.put("endTime", getDateAsStringTimestamp(items.get("endTime")) );
-            	}
+        try {
+            // Paginate queries for fetching recordings.
+            List<String> meetingIDs = Arrays.asList(meetingID.split("\\s*,\\s*"));
+            int pages = meetingIDs.size() / 25 + 1;
+            // Fetch recordings in pages.
+            List<Object> recordings = new ArrayList<Object>();
+            int fromIndex, toIndex;
+            for (int page = 1; page <= pages; ++page) {
+                fromIndex = (page - 1) * 25;
+                toIndex = page * 25;
+                if (toIndex > meetingIDs.size()) {
+                    toIndex = meetingIDs.size();
+                }
+                List subMeetingIDs = meetingIDs.subList(fromIndex, toIndex);
+                recordings.addAll(getRecordings(subMeetingIDs));
             }
-
+            // Prepare and return response with recordings.
+            Map<String, Object> response = new HashMap<String, Object>();
+            response.put("returncode", "SUCCESS");
+            response.put("recordings", recordings);
             return response;
         } catch (BBBException e) {
             logger.debug("getRecordings.Exception: MessageKey=" + e.getMessageKey() + ", Message=" + e.getMessage() );
             throw new BBBException(e.getMessageKey(), e.getMessage(), e);
         }
+    }
+
+    /** Get recordings from BBB server */
+    protected List<Object> getRecordings(List meetingIDs)
+            throws BBBException {
+    	  try {
+            String meetingID = String.join(",", meetingIDs);
+            StringBuilder query = new StringBuilder();
+            query.append("meetingID=");
+            query.append(meetingID);
+            query.append(getCheckSumParameterForQuery(APICALL_GETRECORDINGS, query.toString()));
+
+            Map<String, Object> response = doAPICall(APICALL_GETRECORDINGS, query.toString());
+
+            // Make sure that the date retrived is a unix timestamp.
+            if (response.get("returncode").equals("SUCCESS") && response.get("messageKey") == null) {
+                for (Object recordingEntry : (List<Object>)response.get("recordings")) {
+                    Map<String, String> items = (Map<String, String>)recordingEntry;
+                    items.put("startTime", getDateAsStringTimestamp(items.get("startTime")) );
+                    items.put("endTime", getDateAsStringTimestamp(items.get("endTime")) );
+                }
+                return (List<Object>)response.get("recordings");
+            }
+        } catch (BBBException e) {
+            logger.debug("getRecordings.Exception: MessageKey=" + e.getMessageKey() + ", Message=" + e.getMessage() );
+            throw new BBBException(e.getMessageKey(), e.getMessage(), e);
+        }
+        return new ArrayList<Object>();
     }
 
     /** End/delete a meeting on BBB server */
@@ -652,7 +684,7 @@ public class BaseBBBAPI implements BBBAPI {
     }
 
     protected Map<String, Object> processNode(Node _node) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         NodeList responseNodes = _node.getChildNodes();
         int images = 1; //counter for images (i.e image1, image2, image3)
         for (int i = 0; i < responseNodes.getLength(); i++) {
@@ -662,7 +694,7 @@ public class BaseBBBAPI implements BBBAPI {
                     && ( node.getChildNodes().item(0).getNodeType() == org.w3c.dom.Node.TEXT_NODE || node.getChildNodes().item(0).getNodeType() == org.w3c.dom.Node.CDATA_SECTION_NODE) ) {
                 String nodeValue = node.getTextContent();
                 if (nodeName == "image" && node.getAttributes() != null){
-                    Map<String, String> imageMap = new HashMap<String, String>();
+                    Map<String, String> imageMap = new LinkedHashMap<String, String>();
                     Node heightAttr = node.getAttributes().getNamedItem("height");
                     Node widthAttr = node.getAttributes().getNamedItem("width");
                     Node altAttr = node.getAttributes().getNamedItem("alt");
